@@ -20,6 +20,9 @@ public class ExcelImportServiceImpl implements ExcelImportService {
 
     @Transactional
     public void importExcelToDatabase(MultipartFile file) throws IOException {
+        if (!Objects.requireNonNull(file.getOriginalFilename()).endsWith(".xlsx"))
+            throw new IllegalArgumentException("Yalnız .xlsx fayllar qəbul olunur.");
+
         List<Map<String, String>> data = readExcelFile(file);
         if (data.isEmpty()) return;
         String tableName = "dynamic_table";
